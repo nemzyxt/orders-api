@@ -14,7 +14,7 @@ import (
 var db *gorm.DB
 
 func initDB() {
-	var err error 
+	var err error
 	dataSourceName := "root:@tcp(localhost:3306)/?parseTime=true"
 	db, err = gorm.Open("mysql", dataSourceName)
 	if err != nil {
@@ -47,17 +47,17 @@ func createOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func getOrder(w http.ResponseWriter, r *http.Request) {
-	
+
 }
 
 func getOrders(w http.ResponseWriter, r *http.Request) {
-	
+
 }
 
 func updateOrder(w http.ResponseWriter, r *http.Request) {
-	
+
 }
 
 func deleteOrder(w http.ResponseWriter, r *http.Request) {
-	
+
 }
