@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"orders-api/models"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -46,7 +47,7 @@ func main() {
 func createOrder(w http.ResponseWriter, r *http.Request) {
 	var order models.Order
 	json.NewDecoder(r.Body).Decode(&order)
-	
+
 	db.Create(&order)
 
 	w.Header().Set("Content-Type", "application/json")
@@ -54,7 +55,15 @@ func createOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func getOrder(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["orderId"]
+	id64, _ := strconv.ParseUint(id, 10, 64)
+	orderId := uint(id64)
 
+	var order models.Order
+	db.Preload("Items").First(&order, orderId)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(order)
 }
 
 func getOrders(w http.ResponseWriter, r *http.Request) {
