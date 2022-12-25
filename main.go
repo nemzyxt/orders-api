@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -43,7 +44,13 @@ func main() {
 }
 
 func createOrder(w http.ResponseWriter, r *http.Request) {
+	var order models.Order
+	json.NewDecoder(r.Body).Decode(&order)
+	
+	db.Create(&order)
 
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(order)
 }
 
 func getOrder(w http.ResponseWriter, r *http.Request) {
