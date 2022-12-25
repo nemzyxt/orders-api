@@ -36,7 +36,7 @@ func main() {
 	router.HandleFunc("/orders", createOrder).Methods("POST")
 	router.HandleFunc("/orders/{orderId}", getOrder).Methods("GET")
 	router.HandleFunc("/orders", getOrders).Methods("GET")
-	router.HandleFunc("/orders/{orderId}", updateOrder).Methods("PUT")
+	router.HandleFunc("/orders", updateOrder).Methods("PUT")
 	router.HandleFunc("/orders/{orderId}", deleteOrder).Methods("DELETE")
 
 	initDB()
@@ -74,9 +74,14 @@ func getOrders(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateOrder(w http.ResponseWriter, r *http.Request) {
+	var updatedOrder models.Order
+	json.NewDecoder(r.Body).Decode(&updatedOrder)
+	db.Save(&updatedOrder)
 
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(updatedOrder)
 }
 
 func deleteOrder(w http.ResponseWriter, r *http.Request) {
-
+	
 }
