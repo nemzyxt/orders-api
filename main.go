@@ -67,7 +67,10 @@ func getOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func getOrders(w http.ResponseWriter, r *http.Request) {
-
+	var orders []models.Order
+	w.Header().Set("Content-Type", "application/json")
+	db.Preload("Items").Find(&orders)
+	json.NewEncoder(w).Encode(orders)
 }
 
 func updateOrder(w http.ResponseWriter, r *http.Request) {
