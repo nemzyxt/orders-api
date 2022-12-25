@@ -83,5 +83,12 @@ func updateOrder(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteOrder(w http.ResponseWriter, r *http.Request) {
-	
+	params := mux.Vars(r)
+	id := params["orderId"]
+	id64, _ := strconv.ParseUint(id, 10, 64)
+	idToDelete := uint(id64)
+
+	db.Where("order_id=?", idToDelete).Delete(&models.Item{})
+	db.Where("order_id=?", idToDelete).Delete(&models.Order{})
+	w.WriteHeader(http.StatusNoContent)
 }
